@@ -1,0 +1,615 @@
+/* ==== BODY ==== */
+body {
+    font-family: 'Inter', sans-serif;
+    scroll-behavior: smooth;
+    color: #f2f1f7;
+    overflow-x: hidden;
+    background: radial-gradient(ellipse at bottom, #07070a 0%, #0f1220 100%);
+    position: relative;
+}
+
+/* ==== STARFIELD EFFECT ==== */
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -9999;
+    mix-blend-mode: screen;
+}
+
+/* FAR STARS */
+body::before {
+    background-image:
+        radial-gradient(1px 1px, rgba(255,255,255,0.8) 1px, transparent 1px),
+        radial-gradient(1px 1px, rgba(255,255,255,0.5) 1px, transparent 1px);
+    background-size: 200px 200px, 300px 300px;
+    animation: driftFar 120s linear infinite;
+    opacity: 0.6;
+}
+
+/* NEAR STARS */
+body::after {
+    background-image:
+        radial-gradient(2px 2px, rgba(255,255,255,1) 1px, transparent 1px),
+        radial-gradient(1px 1px, rgba(255,255,255,0.9) 1px, transparent 1px);
+    background-size: 100px 100px, 150px 150px;
+    animation: driftNear 60s linear infinite;
+    opacity: 0.8;
+}
+
+/* STAR ANIMATIONS */
+@keyframes driftFar {
+    0% { transform: translate(0,0); }
+    50% { transform: translate(-50px,30px); }
+    100% { transform: translate(0,0); }
+}
+@keyframes driftNear {
+    0% { transform: translate(0,0); }
+    50% { transform: translate(30px,-40px); }
+    100% { transform: translate(0,0); }
+}
+
+/* ==== HERO SECTION ==== */
+.hero,
+.hero-container,
+.hero-content {
+    position: relative;
+    z-index: 2; /* make sure hero is above stars */
+}
+
+section {
+    background: transparent; /* keeps star background visible */
+}
+
+/* ==== HERO CONTENT ABOVE STAR LAYERS ==== */
+.hero,
+.hero-container,
+.hero-content {
+    position: relative;
+    z-index: 2; /* ensure visible above star layers */
+}
+
+/* ==== STAR LAYERS ==== */
+html::before,
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -9999;
+    mix-blend-mode: screen;
+    opacity: var(--star-opacity);
+}
+
+/* Optional: reduce z-index for html/body pseudo-elements to ensure hero content shows */
+html::before { z-index: -9999; }
+body::before { z-index: -9998; }
+body::after  { z-index: -9997; }
+
+/* HERO LAYOUT */
+.hero-container{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:4rem;
+  max-width:1500px;
+  margin:auto;
+  padding:0 4rem;
+}
+
+/* IMAGE BOX */
+.hero-image-box{
+  position:relative;
+  width:250px;
+  height:320px;
+  border-radius:25px;
+  padding:4px;
+  background: linear-gradient(
+    45deg,
+    var(--primary),
+    var(--secondary),
+    var(--accent)
+  );
+  animation: glowRotate 4s linear infinite, float 4s ease-in-out infinite;
+}
+
+/* INNER IMAGE */
+.hero-image-box img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:20px;
+  background:#000;
+}
+
+/* GLOW EFFECT */
+.hero-image-box::before{
+  content:'';
+  position:absolute;
+  inset:-8px;
+  border-radius:30px;
+  background: inherit;
+  filter: blur(20px);
+  opacity:0.6;
+  z-index:-1;
+}
+
+/* HOVER EFFECT */
+.hero-image-box:hover{
+  transform: scale(1.05);
+}
+
+/* ANIMATIONS */
+@keyframes glowRotate{
+  0%{filter:hue-rotate(0deg)}
+  100%{filter:hue-rotate(360deg)}
+}
+
+@keyframes float{
+  0%,100%{transform: translateY(0)}
+  50%{transform: translateY(-15px)}
+}
+
+/* RESPONSIVE */
+@media(max-width: 1000px){
+  .hero-container{
+    flex-direction:column;
+    text-align:center;
+  }
+
+  .hero-image-box{
+    margin-bottom:5rem;
+  }
+}
+
+:root{
+    --bg-1: #07070a;
+    --bg-2: #0f1220;
+    --bg-3: #101428;
+    --primary: #6366f1;      /* indigo */
+    --secondary: #ec4899;    /* pink */
+    --accent: #f59e0b;       /* amber */
+    --glass-bg: rgba(255,255,255,0.05);
+    --glass-border: rgba(255,255,255,0.1);
+    --muted: rgba(209,213,219,0.85);
+    --btn-shadow-1: 0 0 8px #8b5cf6;
+    --btn-shadow-2: 0 0 20px #6366f1;
+    --btn-shadow-3: 0 0 30px #ec4899;
+    --focus-ring: 0 0 0 4px rgba(99,102,241,0.12);
+    --transition-fast: 0.2s ease;
+    --transition-medium: 0.3s ease;
+    --star-opacity: 0.9; /* overall star layer opacity */
+}
+@media (max-width: 768px){
+  .nav a{
+    color:#ece7eb;
+  }
+}
+
+body{
+  padding-top: 80px; /* prevents overlap from fixed navbar */
+}
+
+
+/* HEADER FIXED & VISIBLE */
+.header{
+  position: fixed;      /* ALWAYS visible */
+  top: 0;
+  left: 0;
+  width: 100%;
+
+  z-index: 99999; /* ABOVE star layers */
+  padding: 1rem 1rem;
+
+  background: rgba(11, 11, 11, 0.65);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(5px);
+
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.header.scrolled{
+  background: rgba(7,7,10,0.85);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+}
+
+.header-inner{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.logo{
+  font-weight:500;
+  font-size:1.5rem;
+  background: linear-gradient(45deg, var(--primary), var(--secondary), var(--accent));
+  -webkit-background-clip:text;
+  background-clip: text; 
+  -webkit-text-fill-color:transparent;
+}
+
+.nav a{
+  margin-left:1.5rem;
+  font-weight:400;
+  color: var(--muted);
+  position:relative;
+}
+
+.nav a::after{
+  content:'';
+  position:absolute;
+  left:0;
+  bottom:-5px;
+  width:0;
+  height:1px;
+  background: linear-gradient(45deg, var(--primary), var(--secondary));
+  transition: width 0.3s ease;
+}
+
+.nav a:hover::after{
+  width:100%;
+}
+
+.nav a:hover{
+  color:#2c038a;
+}
+.header,
+.header * {
+  mix-blend-mode: normal !important;
+}
+
+
+/* ===== GLOBAL RESET ===== */
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body {
+    font-family: 'Inter', sans-serif;
+    scroll-behavior: smooth;
+    color: #f2f1f7;
+    overflow-x: hidden;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    background: linear-gradient(135deg, rgba(7,7,10,1) 0%, rgba(15,18,32,1) 50%, rgba(16,20,40,1) 100%);
+}
+
+:root {
+  /* star tile sizes/densities tuned for low density (realistic) */
+  --star-tile-1: 220px;  /* far */
+  --star-tile-2: 160px;  /* mid */
+  --star-tile-3: 100px;  /* near */
+}
+
+/* Slight random wobble via alternate transform steps (natural movement) */
+@keyframes driftFar {
+    0%   { transform: translate3d(0px, 0px, 0) rotate(0.001deg); }
+    25%  { transform: translate3d(-6px, 4px, 0) rotate(-0.001deg); }
+    50%  { transform: translate3d(4px, -6px, 0) rotate(0.001deg); }
+    75%  { transform: translate3d(-3px, 5px, 0) rotate(-0.001deg); }
+    100% { transform: translate3d(0px, 0px, 0) rotate(0.001deg); }
+}
+@keyframes driftMid {
+    0%   { transform: translate3d(0px, 0px, 0) }
+    25%  { transform: translate3d(-12px, 8px, 0) }
+    50%  { transform: translate3d(8px, -12px, 0) }
+    75%  { transform: translate3d(-6px, 10px, 0) }
+    100% { transform: translate3d(0px, 0px, 0) }
+}
+@keyframes driftNear {
+    0%   { transform: translate3d(0px, 0px, 0) }
+    25%  { transform: translate3d(-20px, 12px, 0) }
+    50%  { transform: translate3d(12px, -20px, 0) }
+    75%  { transform: translate3d(-10px, 16px, 0) }
+    100% { transform: translate3d(0px, 0px, 0) }
+}
+
+/* Soft rainbow hue rotation for each layer; small amplitude to stay subtle */
+@keyframes hueFar {
+    0% { filter: hue-rotate(0deg) saturate(0.95) contrast(1.05); }
+    50% { filter: hue-rotate(15deg) saturate(1.02) contrast(1.05); }
+    100% { filter: hue-rotate(0deg) saturate(0.95) contrast(1.05); }
+}
+@keyframes hueMid {
+    0% { filter: hue-rotate(0deg) contrast(1.03); }
+    50% { filter: hue-rotate(25deg) contrast(1.03); }
+    100% { filter: hue-rotate(0deg) contrast(1.03); }
+}
+@keyframes hueNear {
+    0% { filter: hue-rotate(0deg) contrast(1.05) saturate(1.03); }
+    50% { filter: hue-rotate(35deg) contrast(1.05) saturate(1.06); }
+    100% { filter: hue-rotate(0deg) contrast(1.05) saturate(1.03); }
+}
+
+/* very gentle shimmer/pulse on near stars to simulate twinkle */
+@keyframes pulseNear {
+    0% { opacity: 0.92; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.02); }
+    100% { opacity: 0.92; transform: scale(1); }
+}
+
+
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+    html::before, body::before, body::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+
+
+/* HERO (merged + fixed starfield only; content sits above star layers) */
+.hero{
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+    /* keep blending with the gradient behind stars */
+    background: transparent;
+    animation: none;
+}
+
+/* hero particle overlay (kept as subtle layer above stars) */
+.hero::after{
+    content:'';
+    position:absolute;
+    top:0; left:0;
+    width:140%; height:100%;
+    pointer-events:none;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    z-index: 1;
+    mix-blend-mode: overlay;
+}
+
+/* hero content layer above everything */
+.hero-content{position:relative; z-index: 2; padding: 0 1rem}
+
+/* GLITCH TITLE (unchanged behavior) */
+.hero h1{
+    font-size:6rem;
+    font-weight:600;
+    margin-bottom:5rem;
+    background: linear-gradient(45deg, var(--primary), var(--secondary), var(--accent));
+    background-size:100% 200%;
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    position:relative;
+    animation: bounceIn 1.2s ease forwards;
+    line-height:1.05;
+}
+.hero h1::before,
+.hero h1::after{
+    content: attr(data-text);
+    position:absolute;
+    left:0;
+    top:0;
+    width:400%;
+    overflow:hidden;
+    pointer-events:none;
+}
+.hero h1::before{
+    animation: glitchTop 2s infinite;
+    color: var(--secondary);
+    z-index:-1;
+    mix-blend-mode:screen;
+}
+.hero h1::after{
+    animation: glitchBottom 2s infinite;
+    color: var(--accent);
+    z-index:-3;
+    mix-blend-mode:screen;
+}
+@keyframes glitchTop{
+    0%,40%,100%{clip-path: inset(0 0 0 0); transform: translate(0)}
+    20%{clip-path: inset(0 0 70% 0); transform: translate(-2px,-2px)}
+    60%{clip-path: inset(0 0 60% 0); transform: translate(-2px,0)}
+}
+@keyframes glitchBottom{
+    0%,40%,100%{clip-path: inset(0 0 0 0); transform: translate(0)}
+    20%{clip-path: inset(30% 0 0 0); transform: translate(2px,2px)}
+    60%{clip-path: inset(25% 0 0 0); transform: translate(2px,0)}
+}
+@keyframes bounceIn{
+    0%{opacity:0; transform: translateY(-100px)}
+    60%{opacity:1; transform: translateY(30px)}
+    80%{transform: translateY(-10px)}
+    100%{transform: translateY(0)}
+}
+
+/* TYPING TEXT */
+.typing-text{
+    border-right:3px solid rgba(194, 6, 147, 0.9);
+    white-space: nowrap;
+    overflow: hidden;
+    display:inline-block;
+    max-width:100%;
+    animation: typing 3.5s steps(40,end), blink-caret .75s step-end infinite, colorShift 5s linear infinite;
+    background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+@keyframes typing{from{width:0}to{width:100%}}
+@keyframes blink-caret{from,to{border-color:transparent}50%{border-color:var(--primary)}}
+@keyframes colorShift{0%{background-position:0 50%}50%{background-position:100% 50%}100%{background-position:0 50%}}
+
+/* BUTTONS */
+.btn{
+    display:inline-block;
+    padding:1rem 2rem;
+    background: linear-gradient(45deg, var(--primary), #8b5cf6);
+    color:#e814ba;
+    text-decoration:none;
+    border-radius:50px;
+    font-weight:600;
+    transition: transform var(--transition-medium), box-shadow var(--transition-medium);
+    transform: translateY(0);
+    box-shadow: 0 10px 25px rgba(99,102,241,0.2);
+    border: none;
+    cursor: pointer;
+}
+.btn:hover,
+.btn:focus{
+    transform: translateY(-3px) scale(1.03);
+    box-shadow:
+        var(--btn-shadow-1),
+        var(--btn-shadow-2),
+        var(--btn-shadow-3),
+        0 20px 40px rgba(99,102,241,0.12);
+    outline: none;
+}
+.btn:focus-visible{
+    box-shadow: var(--focus-ring), var(--btn-shadow-1), var(--btn-shadow-2);
+}
+
+.fun-grid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.fun-card {
+  background: rgba(128,129,237,0.2);
+  padding: 1rem 2rem;
+  border-radius: 20px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: transform 0.3s, background 0.3s;
+  text-align: center;
+}
+
+.fun-card:hover {
+  transform: scale(1.1);
+  background: rgba(128,129,237,0.5);
+}
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.fade-in.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+html {
+  scroll-snap-type: y mandatory;
+}
+
+section {
+  scroll-snap-align: start;
+  min-height: 100vh; /* full viewport height */
+}
+
+
+/* SECTION TITLES */
+.section{padding:5rem 2rem; max-width:1200px; margin:0 auto}
+.section-title{font-size:2.5rem; text-align:center; margin-bottom:3rem; position:relative}
+.section-title::after{
+    content:''; position:absolute; bottom:-10px; left:50%; transform:translateX(-50%);
+    width:100px; height:4px; background: linear-gradient(45deg, var(--primary), var(--secondary)); border-radius:2px;
+}
+
+.portfolio-image video,
+.portfolio-image iframe {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+
+/* PORTFOLIO */
+.portfolio-grid{display:grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap:2rem; margin-top:3rem}
+.portfolio-item{
+    background: rgba(60,158,224,0.05); border-radius:30px; overflow:hidden;
+    transition: transform var(--transition-medium), box-shadow var(--transition-medium);
+    transform: translateY(100px); opacity:0; backdrop-filter: blur(20px); border:1px solid rgba(49,162,219,0.08);
+}
+.portfolio-item.visible{transform: translateY(0); opacity:1; animation: fadeInUp .6s ease forwards}
+@keyframes fadeInUp{from{opacity:0; transform: translateY(50px)} to{opacity:1; transform: translateY(0)}}
+.portfolio-item:hover{transform: translateY(-10px); box-shadow: 0 10px 50px rgba(0,0,0,0.4)}
+.portfolio-image{width:100%; height:500px; position:relative; overflow:hidden}
+.portfolio-image img{width:100%; height:100%; object-fit:cover; transition: transform .35s ease}
+.portfolio-item:hover .portfolio-image img{transform: scale(1.1)}
+.portfolio-overlay{position:absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(45deg, rgba(99,102,241,0.85), rgba(139,92,246,0.85)); display:flex; align-items:center; justify-content:center; opacity:0; transition: opacity var(--transition-fast)}
+.portfolio-item:hover .portfolio-overlay{opacity:1}
+.portfolio-content{padding:2rem}
+.portfolio-content h3{font-size:1.5rem; margin-bottom:1rem; color:var(--primary)}
+.portfolio-content p{color:var(--muted); line-height:1.6}
+
+/* SKILLS */
+.skills-grid{display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:2rem; margin-top:3rem}
+.skill-category{background: var(--glass-bg); padding:2rem; border-radius:15px; backdrop-filter: blur(10px); border:1px solid var(--glass-border)}
+.skill-category h3{color:var(--primary); margin-bottom:1.5rem; font-size:1.5rem}
+.skill-item{margin-bottom:1.5rem}
+.skill-info{display:flex; justify-content:space-between; margin-bottom:.5rem}
+.skill-bar{height:10px; background: rgba(255,255,255,0.08); border-radius:5px; overflow:hidden}
+.skill-progress{height:100%; background: linear-gradient(45deg, var(--primary), #8b5cf6); border-radius:5px; width:0; transition: width 2s ease}
+.skill-item.visible .skill-progress{width: var(--progress, 0%)}
+
+/* CONTACT FORM */
+.contact-form{max-width:600px; margin:0 auto; background: var(--glass-bg); padding:3rem; border-radius:20px; backdrop-filter: blur(10px); border:1px solid var(--glass-border)}
+.form-group{margin-bottom:2rem}
+.form-group label{display:block; margin-bottom:.5rem; color:var(--muted)}
+.form-group input, .form-group textarea{
+    width:100%; padding:1rem; background: rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:10px; color:#fff; font-size:1rem;
+    transition: box-shadow var(--transition-fast), transform var(--transition-fast); outline:none;
+}
+.form-group textarea{height:150px; resize:vertical}
+.form-group input:focus, .form-group textarea:focus{box-shadow: var(--focus-ring); transform: translateY(-1px); border-color: rgba(99,102,241,0.6)}
+.contact-form .btn{width:100%; text-align:center}
+
+/* SOCIAL LINKS */
+.social-links{display:flex; justify-content:center; gap:2rem; margin-top:3rem}
+.social-link{width:50px; height:50px; background: linear-gradient(45deg, #c8c9d7, #8b5cf6); border-radius:50%; display:flex; align-items:center; justify-content:center; transition: transform var(--transition-fast), box-shadow var(--transition-fast); text-decoration:none; color:white; font-weight:bold}
+.social-link:hover, .social-link:focus{ transform: translateY(-5px); box-shadow: 0 10px 25px rgba(99,102,241,0.4) }
+.social-link:focus-visible{outline:var(--focus-ring)}
+
+/* UTILITIES & RESPONSIVE */
+.animate-on-scroll{animation: fadeInUp .8s ease forwards}
+.visually-hidden{position:absolute !important; height:1px; width:1px; overflow:hidden; clip:rect(1px,1px,1px,1px); white-space:nowrap}
+
+@media (max-width: 768px){
+    .hero h1{font-size:2.5rem}
+    .hero p{font-size:1.2rem}
+    .section{padding:3rem 1rem}
+    .portfolio-grid{grid-template-columns:1fr}
+    .skills-grid{grid-template-columns:1fr}
+}
+@media (max-width: 420px){
+    .btn{padding:.75rem 1.25rem}
+    .hero h1{font-size:2rem}
+    .typing-text{font-size:.95rem}
+}
+
+/* reduced motion fallback */
+@media (prefers-reduced-motion: reduce){
+    html::before, body::before, body::after { animation: none !important; transition: none !important; transform: none !important; }
+    .hero::after { animation: none !important; }
+}
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 0;
+  text-align: center;
+  color: #6366f1;
+}
+
+
+
